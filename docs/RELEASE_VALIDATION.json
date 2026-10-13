@@ -1,0 +1,21 @@
+{
+  "version": "0.1.0",
+  "text_entries": 4866,
+  "review_flags": 0,
+  "reviewed_files_hash_verified": 49,
+  "voice_entries_preserved": 3933,
+  "glyphs": 1219,
+  "tests_passed": 65,
+  "color_cases": 86,
+  "added_glyph_color_cases": 86,
+  "packaged_installer_steps": [
+    "check",
+    "apply",
+    "apply",
+    "check",
+    "restore",
+    "restore"
+  ],
+  "original_installation_unchanged": true,
+  "full_game_walkthrough": false
+}

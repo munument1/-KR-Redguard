@@ -8,6 +8,8 @@ __pycache__/
 *.cue
 *.jar
 *.zip
+*.ttf
+*.otf
 output/
 temp/
 .pytest_cache/

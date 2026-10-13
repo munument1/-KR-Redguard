@@ -2,7 +2,7 @@
 
 1998년 원본 PC판의 대사·메뉴·아이템·서적·영상 자막을 한국어로 표시하기 위한 기반 작업입니다.
 
-**현재 상태:** RTX 텍스트 추출·재구성 및 FNT 추출 도구 완성, 실제 Steam 게임 파일로 구조 검증 성공. **인게임 한글 출력 / 실행 파일 패치 성공은 아직 검증되지 않았습니다.**
+**현재 상태:** RTX 4,866건의 번역 전수 검수를 마쳤습니다. 검수본과 메뉴 대비 수정을 반영한 **한국어 패치 0.1.0 초기 공개판**을 제공합니다. Windows 패처에서 설치·복원할 수 있습니다. [다운로드](https://github.com/munument1/-KR-Redguard/releases/tag/v0.1.0) · [설치 방법·지원 범위](docs/RELEASE_0_1_0.md).
 
 ## 실행 방법 (Python 3.10+)
 
@@ -38,13 +38,24 @@ python tools/encoding/hangul_report.py --sample '사이러스, 안녕하세요!'
 
 ## 문서
 
+- [한국어 시험 EXE 실행과 검증 범위](docs/TEST_EXE.md)
+
+- [로컬 작업 폴더 및 파일 안내](docs/WORKSPACE_STATUS.md)
+
 - [참조한 외부 소스](docs/RESEARCH_SOURCES.md)
 - [엔진 및 표시 영역](docs/ENGINE_ANALYSIS.md)
 - [FNT 제한 및 글리프 분석](docs/FONT_ANALYSIS.md)
 - [RTX 포맷과 길이 검증](docs/RTX_ANALYSIS.md)
 - [한글 인코딩 전략](docs/ENCODING_STRATEGY.md)
+- [Software 엔진 UTF-8 지원 조사](docs/UTF8_ENGINE_FINDINGS.md)
+- [UTF-8 런타임·배포 패처 개발 현황](docs/UTF8_PATCHER_DEVELOPMENT.md)
+- [유니코드 글리프·줄바꿈 코어 구현](docs/UNICODE_GLYPHS_AND_WRAPPING.md)
+- [원본 비트맵 렌더러 격리 연결 검사](docs/ORIGINAL_RENDERER_INTEGRATION.md)
 - [검증 현황 및 다음 단계](docs/IMPLEMENTATION_PLAN.md)
 - [Unofficial Redguard Patch + Coyle 수정 통합](docs/UNOFFICIAL_PATCH_INTEGRATION.md)
+- [텍스처 한글화 준비: 목록·추출·검수](docs/TEXTURE_LOCALIZATION.md)
+
+**서체 구분:** 솔뫼 김대건체는 텍스처에 포함된 고정 문구 번역에만 사용합니다. 실제 게임 텍스트(FNT)의 한글 글꼴은 별도로 선정할 예정입니다.
 
 ### Unofficial Redguard Patch 연동 (개인 로컬용)
 
