@@ -4,6 +4,8 @@
 
 **현재 상태:** RTX 4,866건의 번역 전수 검수를 마쳤습니다. 검수본과 메뉴 대비 수정을 반영한 **한국어 패치 0.1.0 초기 공개판**을 제공합니다. Windows 패처에서 설치·복원할 수 있습니다. [다운로드](https://github.com/munument1/-KR-Redguard/releases/tag/v0.1.0) · [설치 방법·지원 범위](docs/RELEASE_0_1_0.md).
 
+**별도 URP 한국어 호환판:** 버그 수정·복원 콘텐츠, URP 수정 자막의 한국어 처리와 Coyle 대화 수정을 추가합니다. [설치 안내](docs/URP_KOREAN.md) · [다운로드](https://github.com/munument1/-KR-Redguard/releases/tag/urp-ko-v1.0.0).
+
 ## 실행 방법 (Python 3.10+)
 
 아래는 PowerShell 예시입니다. `$game` 경로는 자신의 정식 게임 설치 위치로 바꾸세요.

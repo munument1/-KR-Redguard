@@ -1,5 +1,7 @@
 # Unofficial Redguard Patch 1.03 + Coyle 수정 연동
 
+**한국어 호환판 추가:** 한국어 패치 0.1.0용 별도 구성을 만들었습니다. 최신 설치·복원 안내는 [URP 한국어 호환판](URP_KOREAN.md)을 참고하세요. 아래는 기존 로컬 Mod Manager 조합 방식의 연구 기록입니다.
+
 ## 목적 및 원본
 
 - 원작자: **Dillonn241**, [Unofficial Redguard Patch (Nexus #11)](https://www.nexusmods.com/theelderscrollsadventuresredguard/mods/11).

@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "base_korean_patch": "0.1.0",
+  "urp": "1.03",
+  "maps_compiled_and_script_roundtrip_verified": 9,
+  "coyle_guard_removed": "after_iszara = 0",
+  "remaining_coyle_guards": [
+    "CyrusFriend = 0",
+    "HayleStory = 1"
+  ],
+  "korean_rtx_lines_verified": 78,
+  "urp_movie_lines_localized": 6,
+  "movie_lines_already_korean": 1,
+  "movie_lines_changed": 5,
+  "movie_timing_colors_preserved": true,
+  "font_coverage": true,
+  "tests_passed": 69,
+  "packaged_apply_repeat_restore_repeat_export": true,
+  "RG_EXE_RTX_KEYS_unchanged": true,
+  "actual_coyle_gameplay_verified": false
+}
