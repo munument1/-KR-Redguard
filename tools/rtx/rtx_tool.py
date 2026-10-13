@@ -164,6 +164,17 @@ def import_manifest(archive: Rtx, data: dict, codec: str) -> bytes:
         translation = record.get("translation")
         if translation is not None:
             changes[tag] = translation
+        elif record.get("corrected_by_urp") is True:
+            # The seed script marks the 78 corrected source strings. Preserve
+            # those bug fixes when building a mixed/partially Korean RTX too.
+            if "patch" not in data or not isinstance(record.get("vanilla_original"), str):
+                raise RtxError("upstream correction missing verified source context")
+            if original[tag].text != record["vanilla_original"].encode("cp437"):
+                raise RtxError(f"{tag}: original text differs from patch baseline")
+            correction = record.get("original")
+            if not isinstance(correction, str):
+                raise RtxError(f"{tag}: corrected source must be a string")
+            changes[tag] = correction
     if len(found) != len(archive.entries):
         raise RtxError("manifest has missing entries")
     return archive.repack(changes, codec)

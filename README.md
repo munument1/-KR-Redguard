@@ -44,5 +44,18 @@ python tools/encoding/hangul_report.py --sample '사이러스, 안녕하세요!'
 - [RTX 포맷과 길이 검증](docs/RTX_ANALYSIS.md)
 - [한글 인코딩 전략](docs/ENCODING_STRATEGY.md)
 - [검증 현황 및 다음 단계](docs/IMPLEMENTATION_PLAN.md)
+- [Unofficial Redguard Patch + Coyle 수정 통합](docs/UNOFFICIAL_PATCH_INTEGRATION.md)
+
+### Unofficial Redguard Patch 연동 (개인 로컬용)
+
+작업 폴더에 있는 원본 URP 1.03 ZIP과 Redguard Mod Manager JAR를 사용해 Coyle의 Hayle 대화 조건을 보완한 합본을 만들 수 있습니다. 원본 모드 데이터는 공개 Git에 포함되지 않습니다.
+
+```powershell
+$urp = 'Unofficial Redguard Patch-11-1-03-1777266218.zip'
+python tools/patch/build_urp_coyle.py --source $urp --game $game --jar 'Redguard Mod Manager.jar'
+python tools/patch/seed_urp_translations.py --urp $urp --rtx "$game/ENGLISH.RTX"
+```
+
+원본 URP의 **대사 78건, 영화 자막 6건**의 교정을 우리 번역 원문에 반영합니다. 스크립트 수정과 설치법·저작권 제한은 [통합 문서](docs/UNOFFICIAL_PATCH_INTEGRATION.md)를 참고하세요.
 
 이 저장소의 도구는 자체 구현이며, 타인의 게임 파일·번역 파일 또는 폰트를 포함하지 않습니다. 자료의 출처와 라이선스를 각 문서에 기록했습니다.

@@ -8,6 +8,8 @@ import unittest
 
 from tools.fnt.fnt_tool import FntError, make_png, metadata, read_font, replace_glyph
 from tools.encoding.hangul_report import decompose_syllable, report
+from tools.patch.build_urp_coyle import inject_coyle, parse_changes
+from tools.patch.seed_urp_translations import parse_rtx_changes, parse_ini_changes
 from tools.rtx.rtx_tool import Rtx, RtxError, import_manifest
 
 
@@ -105,6 +107,20 @@ class RtxTests(unittest.TestCase):
         rebuilt = Rtx(import_manifest(self.archive, manifest, "cp437"))
         self.assertEqual(rebuilt.entries[-1].text, b"")
 
+    def test_upstream_english_corrections_flow_into_rtx(self):
+        manifest = self.archive.manifest()
+        manifest["patch"] = {"name": "Unofficial Redguard Patch"}
+        item = next(x for x in manifest["entries"] if x["tag"] == "TXT1")
+        item["vanilla_original"] = "Hello"
+        item["original"] = "Hello!"
+        item["corrected_by_urp"] = True
+        fixed = Rtx(import_manifest(self.archive, manifest, "cp437"))
+        self.assertEqual(fixed.entries[-1].text, b"Hello!")
+        self.assertEqual(fixed.entries[0].trailing, self.voice)
+        item["vanilla_original"] = "different baseline"
+        with self.assertRaises(RtxError):
+            import_manifest(self.archive, manifest, "cp437")
+
 
 class FntTests(unittest.TestCase):
     def test_roundtrip_analysis_atlas(self):
@@ -142,6 +158,24 @@ class EncodingTests(unittest.TestCase):
         self.assertEqual(data["unique_hangul_syllables"], 2)
         self.assertEqual(data["hangul_occurrences"], 4)
         self.assertEqual(data["cp949_total_bytes"], len("한글 A!".encode("cp949")) + len("한글".encode("cp949")))
+
+
+class UpstreamPatchTests(unittest.TestCase):
+    def test_merge_coyle_without_losing_upstream_map_edits(self):
+        source = b"ISLAND\n  100\tnull\n  100\t  if a = 1\n\nVILE\n  2\t  if b = 1\n"
+        changes = parse_changes(inject_coyle(source).decode("cp437"))
+        self.assertEqual(changes["ISLAND"][:2], [(100, "null"), (100, "  if a = 1")])
+        self.assertEqual(changes["ISLAND"][-2:], [(1520, "null"), (1520, "  if CyrusFriend = 0 and HayleStory = 1")])
+        self.assertEqual(changes["VILE"], [(2, "  if b = 1")])
+
+    def test_upstream_rtx_ids_must_match_disk_index(self):
+        archive = Rtx(build_rtx([(b"A001", 0, b"Foo", b""), (b"B002", 0, b"Bar", b"")]))
+        self.assertEqual(parse_rtx_changes("0\tA001\tFoobar\n", archive), {"A001": "Foobar"})
+        with self.assertRaises(ValueError):
+            parse_rtx_changes("1\tA001\tFoobar\n", archive)
+
+    def test_ini_cinematic_source(self):
+        self.assertEqual(parse_ini_changes("MENU.INI\n  [page3]\n  movie0_text[1] = 0,0,0,0,1,2,Corrected, with comma\n")[0]["corrected_english"], "0,0,0,0,1,2,Corrected, with comma")
 
 
 if __name__ == "__main__":

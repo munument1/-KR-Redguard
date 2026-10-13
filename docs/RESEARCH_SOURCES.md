@@ -14,6 +14,10 @@
 
 문서에 명시된 256글리프 제한·자막 폭 규칙은 **Redguard Preservation 작성자의 분석**으로 확인한 것이며, 본 프로젝트가 엔진 내부 루틴을 역어셈블한 결과는 아닙니다.
 
+## Unofficial Redguard Patch
+
+원본 자료: [Unofficial Redguard Patch 1.03](https://www.nexusmods.com/theelderscrollsadventuresredguard/mods/11), [Coyle 버그 제보](https://www.nexusmods.com/theelderscrollsadventuresredguard/mods/11?tab=bugs). ZIP에 포함된 RTX·Map·INI Changes와 Mod Manager의 `MapChanges.java`, `MapFile.java`, `RtxDatabase.java`, `ScriptReader.java` 소스를 비교했습니다. 원본 모드의 수정·재배포는 별도 허락이 필요합니다. 로컬 생성 방법과 실제 파일 검증은 [통합 문서](UNOFFICIAL_PATCH_INTEGRATION.md)를 확인하세요.
+
 본 저장소에 타인의 소스를 복사하지 않았습니다. 조사 대상 레포지터리의 명시적 라이선스는 이번 작업에서 확인되지 않았으므로, 후속 재사용 시 개별 라이선스를 반드시 확인해야 합니다. 번역 데이터 및 폰트는 권리자 허락 없이 번들에 포함하지 않습니다.
 
 ## 로컬 검증 자료
