@@ -1,0 +1,51 @@
+name: 한국어 패치 문제 제보
+description: 충돌, 한글 표시 문제 또는 오역을 알려주세요.
+title: "[문제 제보] "
+body:
+  - type: dropdown
+    id: patch_version
+    attributes:
+      label: 한국어 패치 버전
+      options:
+        - "0.1.1"
+        - "0.1.0"
+        - "기타 / 모름"
+    validations:
+      required: true
+  - type: dropdown
+    id: urp
+    attributes:
+      label: URP 설치 여부
+      options:
+        - "기본 한패만 설치"
+        - "별도 URP 한국어 호환판 설치"
+        - "영문 URP 또는 다른 모드 설치"
+        - "모름"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: 게임 판본과 실행 환경
+      placeholder: "예: Steam / Software RG.EXE / 기본 DOSBox / Windows 11"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 발생 위치와 재현 방법
+      description: 장소·인물·아이템·메뉴와 문제가 생길 때까지의 순서를 적어주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 실제 증상 또는 오류 문구
+      description: 개발자 콘솔이 뜬다면 오류 번호, 소스 파일명, 행 번호도 적어주세요. 스크린샷을 첨부해도 됩니다.
+    validations:
+      required: true
+  - type: textarea
+    id: extra
+    attributes:
+      label: 추가 정보
+      description: 기대했던 동작, 원본에서도 발생하는지, 추가 모드, 재현에 필요한 세이브 여부 등을 알려주세요.

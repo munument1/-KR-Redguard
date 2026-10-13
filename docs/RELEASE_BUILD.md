@@ -10,7 +10,7 @@
 4. 검증된 MENU.INI/KEYS.INI 번역본과 함께 생성 파일 네 개를 출력 폴더에 모읍니다.
 5. `python tools/patch/build_release.py --original ORIGINAL_GAME_DIR --translated GENERATED_DIR --output PACKAGE/data`로 차분을 생성합니다. RTX는 음원 영역을 원본에서 복사하는 명령과 번역 리터럴만 포함하며, 나머지 세 파일은 bsdiff4 차분입니다.
 6. `python -m PyInstaller --onefile --windowed --name RedguardKoreanPatcher --distpath PACKAGE --workpath output/installer_build --specpath output --hidden-import bsdiff4 --paths tools/patch tools/patch/release_patcher.py`로 Windows 패처를 빌드합니다. 0.1.1은 manifest에 `memory_config`를 추가하며 `memory_config.py`도 함께 묶습니다. 네 차분의 내용은 0.1.0과 같습니다.
-7. 정식 원본 네 파일을 작업 폴더로 복제하고 **패키지 EXE 자체**로 check/apply/apply/check/restore/restore를 실행합니다. 매 단계 결과 해시를 확인합니다. 미지원 파일, 손상 차분, 충돌 백업, 쓰기 실패의 무변경/복구 동작도 검사합니다. 실제 설치 원본을 테스트 대상으로 쓰지 않습니다.
+7. 정식 원본 네 파일과 SYSTEM.INI를 작업 폴더로 복제하고 **패키지 EXE 자체**로 check/apply/apply/check/restore/restore를 실행합니다. 매 단계 결과 해시와 heap 값을 확인합니다. 기존 0.1.0 패처로 설치한 뒤 URP 메뉴와 사용자 키 설정을 둔 상태에서 `memory-fix`도 검사합니다. 미지원 파일, 손상 차분, 충돌 백업, 쓰기 실패의 무변경/복구 동작도 검사합니다. 실제 설치 원본을 테스트 대상으로 쓰지 않습니다.
 8. `python -m unittest discover -s tests -q`와 `engine_render_probe.py`의 일반·추가 글자 색상 검사를 실행합니다. 전체 번역과 INI 문자 커버리지, 음원 보존, 기존 글리프 보존도 확인합니다.
 9. 안내문, 구성 요소 라이선스, 검증 요약, SHA256SUMS.txt를 넣고 ZIP을 만듭니다. ZIP 내부 파일의 해시를 재검증합니다. 게임 원본 파일이 없는지 검사한 후 GitHub Release 첨부 파일로 올립니다.
 

@@ -1,43 +1,50 @@
-# 레드가드 한국어화 로컬 작업 기준
+# 레드가드 한국어화 작업 현황 — 2026-10-13
 
-**작업 기준 폴더:** `D:\Codex_Trans\그냥 번역\레드가드`
+## 현재 배포
 
-게임 설치 원본은 `C:\Games\Steam\steamapps\common\The Elder Scrolls Adventures Redguard\Redguard`에 있으며, 여기서는 **읽기 전용 참조**로만 사용합니다. 모든 새 파일은 위 작업 기준 폴더에 작성합니다.
+- 기본 한국어 패치: **0.1.1**, 항구 편지 아이템 화면의 메모리 할당 오류 수정.
+- 별도 URP 한국어 호환판: **1.0.0 + Coyle 수정**, 기본 패치 0.1.1과 호환. Nexus 파일의 기존 표시 버전은 1.0.3.
+- RTX 4,866건의 전수 텍스트 검수 완료, 활성 검수 보류 0건.
+- 자동 테스트 77개와 배포 EXE의 신규 설치·0.1.0 업데이트·복원 검사 통과.
+- 사용자가 기본 한패 + `heap_kbytes=20000`에서 항구 편지 표시와 정상 진행 확인. 전체 게임 플레이 검증은 미완료.
 
-## 지금까지의 작업 자료
+[GitHub 0.1.1](https://github.com/munument1/-KR-Redguard/releases/tag/v0.1.1) · [Nexus](https://www.nexusmods.com/theelderscrollsadventuresredguard/mods/16) · [설치·수정 근거](RELEASE_0_1_1.md) · [검증 요약](RELEASE_0_1_1_VALIDATION.json).
 
-| 용도 | 작업 폴더 기준 위치 | 상태 |
-| --- | --- | --- |
-| RTX 전체 대사 원문 | `output/ENGLISH.translation.json` | 4,866건 추출 |
-| 비공식 패치 수정 원문 | `output/ENGLISH.urp-source.json` | 번역 **기준본**, 78건 교정 반영 |
-| JSONL 번역 배치 | `output/text_translation/rtx_*.jsonl` | 번역 입력용. `index.json` 참고 |
-| 지도 한국어 초안 | `output/texture_ko/map_ko_draft.png` | 검토용 PNG, ‘훈딩 만’, ‘척추 열도’ 반영 |
-| 지도 원본 비교 | `output/texture_ko/map_before_after.png` | 원본과 번역본을 가로로 비교 |
-| 기타 텍스처 추출 | `output/texture_exports/` | 추출본, 게임 재삽입 미완료 |
-| 글꼴 실험 | `output/REDSEL*`, `output/ga.json` | 인게임 한국어 표시는 미검증 |
-| UTF-8 시험 EXE·게임 복사본 | `output/engine_utf8/playtest_v4_menu_final_20261013/` | v4 표시 사용자 확인 완료. 최종 검수본은 별도 0.1.0 패치에 반영 |
-| 한국어 번역 초안 | `output/text_translation/drafts/rtx_*_ko.jsonl` | 4,866건. 시험 RTX 생성, 검수 완료 아님 |
-| 비공식 패치·Coyle 수정 합본 | `output/Unofficial Redguard Patch + Coyle Fix (Local).zip` | 로컬 검증용 |
-| RTX 도구 | `tools/rtx/` | 파싱·재구성, JSONL 작업 준비 |
-| 지도 PNG 제작 도구 | `tools/texture/` | `localize_map.py` |
-| 연구·검증 문서 | `docs/` | 포맷·한글 처리·패치 통합 등 |
+0.1.1 배포 소스 커밋: `5da6ba2dcf2b53fc3b5e42acd419e61e627b197c`.
+배포 ZIP SHA-256: `0908f263d6deaec95108430b1d0503cb46aec977a22e49d67cb88eda331ac8c5`.
 
-## 텍스트 번역 시작
+## 공개 소스
 
-다음 명령으로 **이미 추출해 둔 원문 JSON**을 100건씩 UTF-8 JSONL로 나눌 수 있습니다. CSV를 사용하지 않습니다.
+| 용도 | 위치 |
+| --- | --- |
+| RTX 읽기·재구성 | `tools/rtx/` |
+| UTF-8·글리프·색상 처리 | `tools/encoding/` |
+| LE 실행 파일 빌더 | `tools/patch/build_test_exe.py` |
+| 차분 패키지 빌더·설치·복원 | `tools/patch/build_release.py`, `tools/patch/release_patcher.py` |
+| 항구 충돌 수정 설정·복원 | `tools/patch/memory_config.py` |
+| 별도 URP 한국어 호환 처리 | `tools/patch/urp_korean.py`, `translations/urp_korean.json` |
+| 회귀 검사 | `tests/` |
+| 빌드·배포 절차 | [RELEASE_BUILD.md](RELEASE_BUILD.md) |
 
-```powershell
-cd 'D:\Codex_Trans\그냥 번역\레드가드'
-python tools/rtx/prepare_jsonl_batches.py
-```
+## 로컬 보존 자료
 
-각 JSONL 줄은 `index`, `tag`, `kind`, `original`, `translation` 필드를 가집니다. 원문·태그는 그대로 두고 `translation`에 한국어를 넣습니다. 기존 배치가 있으면 프로그램은 덮어쓰지 않고 중단합니다. **현재 번역 초안 4,866건이 있으며**, UTF-8 시험 RTX와 Software 시험 EXE도 생성했습니다. 실제 게임 검증과 자막 줄바꿈·화면별 글꼴 연결은 남아 있습니다. [실행 안내](TEST_EXE.md)를 참고하세요.
+작업 폴더는 `D:\Codex_Trans\그냥 번역\레드가드`입니다. Steam 설치본은 읽기 전용 참조로 사용하며 실행 비교는 별도 복사본에서 진행했습니다.
 
-`output/`의 게임 원문·음성·이미지와 루트의 제공받은 글꼴·ZIP·JAR 파일은 **Git에 공개하지 않습니다**. README와 도구, 문서만 버전 관리합니다.
+| 용도 | 작업 폴더 기준 위치 |
+| --- | --- |
+| 번역 기준 원문·URP 교정 78건 | `output/ENGLISH.urp-source.json` |
+| 최종 검수본·승격된 번역 입력 | `output/text_translation/reviews/final_drafts_20261013/`, `output/text_translation/drafts/` |
+| 검수 완료 기록·입력 SHA-256 | `output/text_translation/reviews/final_text_qa_completion_20261013.json` |
+| 최종 글리프·색상 빌드 입력 | `output/rebuild_inputs/font_base/`, `output/rebuild_inputs/font_final/` |
+| 한국어 MENU/KEYS 빌드 입력 | `output/engine_utf8/native_ini_v2/` |
+| 이전 빌드·렌더링·설치 검증 기록 | `output/build_archive/` |
+| 배포 패키지·ZIP | `output/releases/` |
+| 0.1.1 패키지 EXE 검증 기록 | `output/release_work/0.1.1/installer_verification.json` |
+| 항구 충돌 비교 실행·실패/성공 기록 | `output/crash_debug/`, `output/crash_debug/cases/` |
+| 이전 시험본의 세이브·설정 | `output/preserved_saves/` |
+| 개인 설치용 URP 완성 파일 | `output/urp_korean_complete_files/` |
+| Nexus 이미지·업로드 확인 화면 | `output/nexus_images/` |
 
-## 배포 0.1.0
+과거 문서의 `playtest_*`, `texture_exports`, 기존 `urp_work` 등은 정리되어 존재하지 않을 수 있습니다. 재빌드는 위 보존 입력과 새 출력 폴더를 사용하세요. 초기 연구 문서의 미검증 상태는 해당 시점의 기록이며, 현재 상태는 이 문서와 최신 배포 안내가 기준입니다.
 
-- 최종 검수본: `output/text_translation/reviews/final_drafts_20261013/` (4,866건, 활성 보류 0건).
-- 배포 패키지: `output/releases/Redguard-Korean-0.1.0/`.
-- 설치·복원 검사 기록: `output/release_work/installer_verification.json`.
-- [배포 안내](RELEASE_0_1_0.md), [검증 요약](RELEASE_VALIDATION.json).
+`output/`의 원본 게임 에셋·음원·검수 입력, 사용자가 제공한 폰트·URP ZIP·Mod Manager JAR는 Git에 공개하지 않습니다. 공개 저장소의 소스만으로 전체 번역과 글리프를 처음부터 재생성하려면 해당 로컬 입력도 필요합니다. 설치용 차분은 GitHub Release와 Nexus에서 제공합니다.
