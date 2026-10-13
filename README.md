@@ -6,7 +6,7 @@
 
 **별도 URP 한국어 호환판:** 버그 수정·복원 콘텐츠, URP 수정 자막의 한국어 처리와 Coyle 대화 수정을 추가합니다. [설치 안내](docs/URP_KOREAN.md) · [다운로드](https://github.com/munument1/-KR-Redguard/releases/tag/urp-ko-v1.0.0).
 
-문제는 [GitHub Issues](https://github.com/munument1/-KR-Redguard/issues/new/choose) 또는 [Nexus](https://www.nexusmods.com/theelderscrollsadventuresredguard/mods/16?tab=posts)로 제보해 주세요. 패치 버전, URP 여부, 발생 위치·재현 방법과 오류 문구가 있으면 확인에 도움이 됩니다. [현재 소스·보존 자료](docs/WORKSPACE_STATUS.md)와 [빌드 절차](docs/RELEASE_BUILD.md)를 기준으로 수정 이력을 관리합니다.
+문제는 [GitHub Issues](https://github.com/munument1/-KR-Redguard/issues/new/choose) 또는 [Nexus](https://www.nexusmods.com/theelderscrollsadventuresredguard/mods/16?tab=posts)로 제보해 주세요. 패치 버전, URP 여부, 발생 위치·재현 방법과 오류 문구가 있으면 확인에 도움이 됩니다. [작업일지](docs/WORK_LOG.md)에 주요 결정과 검증 결과를 기록하며, [현재 소스·보존 자료](docs/WORKSPACE_STATUS.md)와 [빌드 절차](docs/RELEASE_BUILD.md)를 함께 관리합니다.
 
 ## 실행 방법 (Python 3.10+)
 
