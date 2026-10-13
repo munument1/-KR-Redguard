@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.RTX
+*.FNT
+*.EXE
+*.bin
+*.iso
+*.cue
+*.jar
+*.zip
+output/
+temp/
+.pytest_cache/
