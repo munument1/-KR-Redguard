@@ -1,0 +1,29 @@
+{
+  "version": "0.1.1",
+  "automated_tests_passed": 77,
+  "game_controls": [
+    {"configuration": "full Korean release, heap_kbytes=22000", "result": "user reproduced crash before harbor letter popup"},
+    {"configuration": "English letter body only, heap_kbytes=22000", "result": "user reproduced same crash"},
+    {"configuration": "full Korean release, heap_kbytes=20000", "result": "user confirmed letter popup and normal continuation"}
+  ],
+  "reported_error": {
+    "message": "ERROR!(2) Out of memory",
+    "source": "3dlib.c",
+    "line": 435,
+    "asset": "3DART/INVENTRY.ROB",
+    "allocation_bytes": 2281872,
+    "asset_identical_to_steam_original": true
+  },
+  "core_translation_deltas_identical_to_0_1_0": true,
+  "packaged_executable_verification": {
+    "fresh_check_apply_repeat_check_restore_repeat": true,
+    "upgrade_from_original_0_1_0_executable": true,
+    "memory_fix_with_actual_korean_urp_menu_and_custom_controls": true,
+    "other_settings_and_save_preserved": true,
+    "unsupported_engine_prevents_setting_write": true
+  },
+  "limitations": [
+    "All game regions and inventory items have not been play-tested.",
+    "Effects of the smaller reserved 3D-manager heap on other complex scenes need additional play testing."
+  ]
+}

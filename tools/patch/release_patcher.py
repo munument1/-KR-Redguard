@@ -8,6 +8,7 @@ import sys
 import zlib
 
 from binary_patcher import atomic_replace
+import memory_config
 
 FILES = {'RG.EXE', 'ENGLISH.RTX', 'MENU.INI', 'KEYS.INI'}
 
@@ -48,10 +49,19 @@ def run(action, directory, package):
     manifest = json.loads((package / 'manifest.json').read_text(encoding='utf-8'))
     if manifest.get('format') != 'redguard-ko-release-v1' or set(manifest['files']) != FILES:
         raise ValueError('Invalid release manifest')
+    if action not in {'apply', 'restore', 'check', 'memory-fix'}:
+        raise ValueError('Unknown action')
+    memory = manifest.get('memory_config')
+    if memory is not None and memory != {'format': 'system-heap-cap-v1', 'max_heap_kbytes': 20000}:
+        raise ValueError('Invalid memory configuration manifest')
+    if action == 'memory-fix' and memory is None:
+        raise ValueError('This package does not include the inventory memory fix')
     pending = []
     states = {}
     # Validate every target, backup and reconstructed output before any writes.
     for name, record in manifest['files'].items():
+        if action == 'memory-fix' and name not in {'RG.EXE', 'ENGLISH.RTX'}:
+            continue
         path = directory / name
         backup = directory / (name + '.redguard-ko.bak')
         if path.is_symlink() or not path.is_file() or backup.is_symlink():
@@ -63,6 +73,10 @@ def run(action, directory, package):
         if backup.exists() and (not backup.is_file() or sha(backup.read_bytes()) != record['source_sha256']):
             raise ValueError(f'{name}: 기존 백업이 원본과 다릅니다.')
         states[name] = 'original' if digest == record['source_sha256'] else 'patched'
+        if action == 'memory-fix':
+            if states[name] != 'patched':
+                raise ValueError(f'{name}: 먼저 기본 한국어 패치를 적용하세요.')
+            continue
         if action == 'restore':
             if states[name] == 'original':
                 continue
@@ -82,17 +96,20 @@ def run(action, directory, package):
             if sha(target) != record['target_sha256'] or len(target) != record['target_size']:
                 raise ValueError(f'{name}: 패치 결과 검증 실패')
         pending.append((path, backup, current, target))
+    if memory is not None:
+        memory_pending, memory_state = memory_config.plan(directory, action)
+        states['SYSTEM.INI'] = memory_state
+        if memory_pending is not None:
+            pending.append(memory_pending)
     if action == 'check':
         return {'action': action, 'states': states, 'validated': True}
-    if action not in {'apply', 'restore'}:
-        raise ValueError('Unknown action')
     # Back up all originals first, never replace a previous backup.
-    if action == 'apply':
+    if action in {'apply', 'memory-fix'}:
         for path, backup, current, target in pending:
             if not backup.exists():
                 with backup.open('xb') as handle:
                     handle.write(current)
-            if backup.read_bytes() != current:
+            if path.name != 'SYSTEM.INI' and backup.read_bytes() != current:
                 raise ValueError(f'{path.name}: 백업 검증 실패')
     written = []
     try:
@@ -110,15 +127,16 @@ def gui(package):
     import tkinter as tk
     from tkinter import filedialog, messagebox
     root = tk.Tk()
-    root.title('레드가드 한국어 패치 0.1.0')
-    root.geometry('640x260')
+    version = json.loads((package / 'manifest.json').read_text(encoding='utf-8')).get('version', '')
+    root.title(f'레드가드 한국어 패치 {version}')
+    root.geometry('700x280')
     path = tk.StringVar()
     tk.Label(root, text='게임을 종료한 뒤 Steam Redguard 설치 폴더를 선택하세요.\nSoftware RG.EXE 전용 · 원본 자동 백업 · 복원 지원', pady=15).pack()
     row = tk.Frame(root)
     row.pack(fill='x', padx=20)
     tk.Entry(row, textvariable=path).pack(side='left', fill='x', expand=True)
     tk.Button(row, text='폴더 선택', command=lambda: path.set(filedialog.askdirectory() or path.get())).pack(side='right')
-    status = tk.StringVar(value='검수된 RTX 4,866건 / 메뉴 / 도입부 번역 포함')
+    status = tk.StringVar(value='RTX 4,866건 / 메뉴 / 도입부 번역 · 항구 아이템 화면 메모리 수정 포함\n기존 한패 또는 URP 설치자는 항구 충돌 수정만 눌러도 됩니다.')
     tk.Label(root, textvariable=status, wraplength=600, pady=15).pack()
 
     def execute(action):
@@ -129,7 +147,7 @@ def gui(package):
             status.set('파일 검증 중...')
             root.update_idletasks()
             result = run(action, path.get(), package)
-            status.set({'check': '검증 완료', 'apply': '한국어 패치 적용 완료', 'restore': '원본 복원 완료'}[action])
+            status.set({'check': '검증 완료', 'apply': '한국어 패치 적용 완료', 'memory-fix': '항구 충돌 수정 적용 완료', 'restore': '원본 복원 완료'}[action])
             messagebox.showinfo('완료', status.get())
         except Exception as error:
             status.set('작업을 완료하지 못했습니다.')
@@ -137,7 +155,7 @@ def gui(package):
 
     buttons = tk.Frame(root)
     buttons.pack()
-    for label, action in [('파일 확인', 'check'), ('패치 적용', 'apply'), ('원본 복원', 'restore')]:
+    for label, action in [('파일 확인', 'check'), ('패치 적용', 'apply'), ('항구 충돌 수정', 'memory-fix'), ('원본 복원', 'restore')]:
         tk.Button(buttons, text=label, width=16, command=lambda a=action: execute(a)).pack(side='left', padx=5)
     root.mainloop()
 
@@ -145,7 +163,7 @@ def gui(package):
 def main():
     home = Path(sys.executable).parent if getattr(sys, 'frozen', False) else Path(__file__).resolve().parent
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', nargs='?', choices=['check', 'apply', 'restore'])
+    parser.add_argument('action', nargs='?', choices=['check', 'apply', 'restore', 'memory-fix'])
     parser.add_argument('directory', nargs='?', type=Path)
     parser.add_argument('--package', type=Path, default=home / 'data')
     parser.add_argument('--report', type=Path)

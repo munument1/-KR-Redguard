@@ -1,6 +1,8 @@
 # Unofficial Redguard Patch 한국어 호환판 1.0.0 + Coyle 수정
 
-레드가드 한국어 패치 0.1.0 위에 설치하는 별도 URP 한국어 구성입니다. 기존 한글패치 배포물은 변경하지 않습니다.
+레드가드 한국어 패치 0.1.0/0.1.1 위에 설치하는 별도 URP 한국어 구성입니다. 기존 URP 한국어 호환판의 게임 데이터와 패처는 0.1.1에도 호환됩니다.
+
+**항구 충돌 수정:** 기본 한패 0.1.1을 권장합니다. 이미 URP를 설치했다면 새 기본 패처의 **항구 충돌 수정** 버튼으로 SYSTEM.INI만 수정하세요. URP를 다시 설치할 필요는 없습니다. [0.1.1 안내](RELEASE_0_1_1.md).
 
 ## 내용
 
@@ -11,7 +13,7 @@
 
 ## 먼저 준비할 것
 
-1. Steam Software판에 [한국어 패치 0.1.0](https://github.com/munument1/-KR-Redguard/releases/tag/v0.1.0)을 설치합니다. 이때 생성된 *.redguard-ko.bak 원본 백업을 보존하세요.
+1. Steam Software판에 [한국어 패치 0.1.1](https://github.com/munument1/-KR-Redguard/releases/tag/v0.1.1)을 설치합니다. 이때 생성된 *.redguard-ko.bak 원본 백업을 보존하세요.
 2. 원작자 Dillonn241의 [Unofficial Redguard Patch 1.03 ZIP](https://www.nexusmods.com/theelderscrollsadventuresredguard/mods/11)을 받습니다.
 3. 같은 원작자의 [Redguard Mod Manager and Texture Viewer 1.13](https://www.nexusmods.com/theelderscrollsadventuresredguard/mods/10)에서 Redguard Mod Manager.jar를 받습니다.
 4. Java 24 이상을 준비합니다. Java 24.0.2로 검증했습니다. 다른 Java 버전의 추가 검증은 수행하지 않았습니다.

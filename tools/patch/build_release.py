@@ -36,12 +36,13 @@ def rtx_delta(source, target):
     return zlib.compress(json.dumps(operations, separators=(',', ':')).encode('utf-8'), 9)
 
 
-def build(original, translated, output):
+def build(original, translated, output, version='0.1.1'):
     import bsdiff4
     output.mkdir(parents=True, exist_ok=False)
-    manifest = {'format': 'redguard-ko-release-v1', 'version': '0.1.0',
+    manifest = {'format': 'redguard-ko-release-v1', 'version': version,
                 'edition': 'Steam Software RG.EXE', 'files': {},
-                'validation': 'User confirmed v4 menu, intro and in-game subtitle appearance. Final reviewed RTX text and four added glyphs verified by automated checks; full game walkthrough not performed.'}
+                'memory_config': {'format': 'system-heap-cap-v1', 'max_heap_kbytes': 20000},
+                'validation': 'User reproduced inventory OARD allocation failure at 3dlib.c:435 with heap_kbytes=22000, including an English-letter control. Full Korean release passed the harbor letter popup with heap_kbytes=20000. Other game regions are not fully play-tested.'}
     for name in ['RG.EXE', 'ENGLISH.RTX', 'MENU.INI', 'KEYS.INI']:
         source, target = (original / name).read_bytes(), (translated / name).read_bytes()
         codec = 'copy-literal-v1' if name == 'ENGLISH.RTX' else 'bsdiff4'
@@ -63,5 +64,6 @@ if __name__ == '__main__':
     parser.add_argument('--original', type=Path, required=True)
     parser.add_argument('--translated', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--version', default='0.1.1')
     args = parser.parse_args()
-    build(args.original, args.translated, args.output)
+    build(args.original, args.translated, args.output, args.version)
